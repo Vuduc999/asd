@@ -20,14 +20,14 @@ async function icon(Comp, color = '#FFFFFF') {
 
 const pres = new pptxgen();
 pres.layout = 'LAYOUT_WIDE'; // 13.333 x 7.5
-pres.title = 'Tax refund at Hanoi City Tax: scenario model';
+pres.title = 'VAT refund at Hanoi City Tax: scenario model';
 
 function title(s, text, sub) {
   s.addText(text, { x: 0.5, y: 0.35, w: 12.3, h: 0.9, fontFace: F, fontSize: 24, bold: true, color: C.black, valign: 'top', margin: 0, isTextBox: true });
   if (sub) s.addText(sub, { x: 0.5, y: 1.22, w: 12.3, h: 0.35, fontFace: F, fontSize: 13, color: C.g10, valign: 'top', margin: 0, isTextBox: true });
 }
 function footer(s, n) {
-  s.addText('Tax refund at Hanoi City Tax  |  Scenario model  |  Discussion document', { x: 0.5, y: 7.05, w: 9, h: 0.3, fontFace: F, fontSize: 9, color: C.g7, margin: 0, isTextBox: true });
+  s.addText('VAT refund at Hanoi City Tax  |  Scenario model  |  Discussion document', { x: 0.5, y: 7.05, w: 9, h: 0.3, fontFace: F, fontSize: 9, color: C.g7, margin: 0, isTextBox: true });
   s.addText(String(n), { x: 12.33, y: 7.05, w: 0.5, h: 0.3, fontFace: F, fontSize: 9, color: C.g7, align: 'right', margin: 0, isTextBox: true });
 }
 
@@ -95,7 +95,7 @@ function legend(s, y) {
   s.addShape(pres.shapes.OVAL, { x: 8.9, y: 1.4, w: 4.7, h: 4.7, fill: { color: C.green }, line: { color: C.green } });
   s.addShape(pres.shapes.OVAL, { x: 10.55, y: 0.55, w: 1.2, h: 1.2, fill: { color: C.deep }, line: { color: C.deep } });
   s.addText('DISCUSSION DOCUMENT', { x: 0.7, y: 1.6, w: 7.5, h: 0.4, fontFace: F, fontSize: 12, bold: true, color: C.green, charSpacing: 2, margin: 0, isTextBox: true });
-  s.addText('Tax refund at Hanoi City Tax', { x: 0.7, y: 2.1, w: 8, h: 1.1, fontFace: F, fontSize: 40, bold: true, color: C.white, margin: 0, isTextBox: true });
+  s.addText('VAT refund at Hanoi City Tax', { x: 0.7, y: 2.1, w: 8, h: 1.1, fontFace: F, fontSize: 40, bold: true, color: C.white, margin: 0, isTextBox: true });
   s.addText('Scenario model and next actions following the Department of Taxation’s guidance letter', { x: 0.7, y: 3.25, w: 7.6, h: 1.0, fontFace: F, fontSize: 18, color: 'D0D0CE', valign: 'top', margin: 0, isTextBox: true });
   s.addText('September 2026', { x: 0.7, y: 6.3, w: 5, h: 0.4, fontFace: F, fontSize: 12, color: C.g7, margin: 0, isTextBox: true });
 
@@ -323,6 +323,6 @@ function legend(s, y) {
   });
   footer(s, 10);
 
-  await pres.writeFile({ fileName: 'hanoi-tax-refund-scenarios.pptx' });
+  await pres.writeFile({ fileName: 'hanoi-vat-refund-scenarios.pptx' });
   console.log('written');
 })();
