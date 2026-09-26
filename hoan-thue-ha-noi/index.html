@@ -1,0 +1,335 @@
+<title>Kịch bản hoàn thuế Hà Nội</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<style>
+:root{
+  --ground:#F3F5F8; --surface:#FFFFFF; --ink:#172230; --muted:#586575; --line:#CBD3DD; --line-soft:#E3E8EE;
+  --accent:#1D4E89; --accent-soft:#E6EEF8;
+  --ok:#1F7A4D; --ok-soft:#E5F3EB; --warn:#9A6300; --warn-soft:#FBF1DE; --risk:#B3372B; --risk-soft:#FBE9E6;
+  --serif:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans:"Be Vietnam Pro", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#0F141A; --surface:#171E27; --ink:#E4E9F0; --muted:#98A5B4; --line:#334050; --line-soft:#232C37;
+    --accent:#86B3EC; --accent-soft:#1B2A3D;
+    --ok:#62C391; --ok-soft:#15291F; --warn:#E3AA48; --warn-soft:#2E2413; --risk:#F07F72; --risk-soft:#33201D;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#0F141A; --surface:#171E27; --ink:#E4E9F0; --muted:#98A5B4; --line:#334050; --line-soft:#232C37;
+  --accent:#86B3EC; --accent-soft:#1B2A3D;
+  --ok:#62C391; --ok-soft:#15291F; --warn:#E3AA48; --warn-soft:#2E2413; --risk:#F07F72; --risk-soft:#33201D;
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;padding-inline:16px;padding-block:32px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:40px}
+h1,h2{font-family:var(--serif);text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(28px,4vw,40px);line-height:1.15}
+h2{font-size:24px;line-height:1.25}
+p{margin:0}
+.eyebrow{font-size:11.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted);max-width:68ch;font-size:16px}
+header{display:flex;flex-direction:column;gap:14px}
+section{display:flex;flex-direction:column;gap:16px}
+
+/* status */
+.status{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.st{padding:16px 18px;display:flex;flex-direction:column;gap:6px;border-right:1px solid var(--line-soft);position:relative}
+.st:last-child{border-right:0}
+.st .dot{width:10px;height:10px;border-radius:50%;border:2px solid var(--line);background:var(--surface)}
+.st.done .dot{background:var(--muted);border-color:var(--muted)}
+.st.now{background:var(--accent-soft)}
+.st.now .dot{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 25%,transparent)}
+.st b{font-size:14.5px;font-weight:600;line-height:1.35}
+.st small{font-size:12.5px;color:var(--muted)}
+.st .tag{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+@media (max-width:760px){.status{grid-template-columns:1fr 1fr}.st:nth-child(2){border-right:0}.st:nth-child(-n+2){border-bottom:1px solid var(--line-soft)}}
+
+/* model */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:inherit;font-size:13.5px;font-weight:500;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:7px 14px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.chip i{width:9px;height:9px;border-radius:50%;display:inline-block;background:var(--muted)}
+.chip[data-tone="ok"] i{background:var(--ok)} .chip[data-tone="warn"] i{background:var(--warn)} .chip[data-tone="risk"] i{background:var(--risk)}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.chip:focus-visible,.node:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.model{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:20px;align-items:start}
+@media (max-width:980px){.model{grid-template-columns:1fr}}
+.canvas{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow-x:auto;padding:12px}
+.canvas svg{display:block;width:100%;min-width:760px;height:auto}
+.edge{fill:none;stroke:var(--muted);stroke-width:1.6;transition:opacity .2s}
+.arrow{fill:var(--muted);transition:opacity .2s}
+.elabel{font:600 12px var(--sans);fill:var(--muted);paint-order:stroke;stroke:var(--surface);stroke-width:5px}
+.hot .edge{stroke:var(--accent);stroke-width:2.2}.hot .arrow{fill:var(--accent)}.hot .elabel{fill:var(--accent)}
+.dim{opacity:.22}
+.node{cursor:pointer;transition:opacity .2s}
+.nd{height:100%;border:1.5px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 11px;display:flex;flex-direction:column;justify-content:center;gap:2px;font-family:var(--sans);color:var(--ink)}
+.nd .eb{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.nd b{font-size:15px;line-height:1.3;font-weight:600}
+.nd .sb{font-size:12.5px;line-height:1.35;color:var(--muted)}
+.nd.step{background:var(--accent-soft);border-color:var(--accent)}
+.nd.step .eb{color:var(--accent)}
+.nd.start{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.nd.start .eb,.nd.start .sb{color:color-mix(in srgb,var(--surface) 72%,transparent)}
+.nd.ok{border-color:var(--ok);background:var(--ok-soft)} .nd.ok .eb{color:var(--ok)}
+.nd.warn{border-color:var(--warn);background:var(--warn-soft)} .nd.warn .eb{color:var(--warn)}
+.nd.risk{border-color:var(--risk);background:var(--risk-soft)} .nd.risk .eb{color:var(--risk)}
+.nd.note{border-style:dashed;background:transparent}
+.nd .pill{align-self:flex-start;margin-top:3px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:1px 7px;border-radius:4px;background:var(--accent);color:var(--surface)}
+.node.sel .nd{box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 45%,transparent)}
+.node:hover .nd{border-color:var(--accent)}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px)}
+.panel h3{margin:0;font-family:var(--serif);font-size:20px;line-height:1.3;text-wrap:balance}
+.panel p{color:var(--ink);font-size:14.5px}
+.panel ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14.5px}
+.panel .k{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.panel .hint{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line-soft);padding-top:10px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12.5px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:14px;height:10px;border-radius:2px;border:1.5px solid;display:inline-block}
+
+/* letter */
+.letter{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:24px 26px;display:grid;grid-template-columns:220px 1fr;gap:24px}
+@media (max-width:760px){.letter{grid-template-columns:1fr}}
+.letter .meta{display:flex;flex-direction:column;gap:10px;font-size:13.5px;color:var(--muted)}
+.letter .meta b{display:block;color:var(--ink);font-weight:600;font-size:14px}
+.letter ol{margin:0;padding:0;list-style:none;counter-reset:y;display:flex;flex-direction:column;gap:14px}
+.letter li{counter-increment:y;display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start}
+.letter li::before{content:counter(y);font-family:var(--serif);font-weight:700;font-size:20px;color:var(--accent);border:1.5px solid var(--accent);border-radius:50%;width:32px;height:32px;display:grid;place-items:center;line-height:1}
+.letter li b{display:block;font-weight:600}
+.letter li span{color:var(--muted);font-size:14.5px}
+
+/* table */
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:14px}
+th,td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--line-soft)}
+th{font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);background:var(--ground)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600;white-space:nowrap}
+.badge{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:4px;white-space:nowrap}
+.badge.ok{background:var(--ok-soft);color:var(--ok)} .badge.warn{background:var(--warn-soft);color:var(--warn)} .badge.risk{background:var(--risk-soft);color:var(--risk)}
+
+/* principles */
+.rules{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media (max-width:760px){.rules{grid-template-columns:1fr}}
+.rule{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.rule b{font-weight:600}
+.rule p{color:var(--muted);font-size:14.5px}
+footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Hồ sơ hoàn thuế · Thuế TP Hà Nội</span>
+    <h1>Kịch bản xử lý sau khi Cục Thuế ban hành công văn hướng dẫn</h1>
+    <p class="lede">Hồ sơ đang tạm dừng vì các bên chưa thống nhất cách hiểu quy định pháp luật. Mô hình dưới đây mô tả các khả năng có thể xảy ra khi có công văn hướng dẫn của Cục Thuế, và hành động tương ứng của công ty ở từng bước.</p>
+  </header>
+
+  <section aria-labelledby="h-status">
+    <h2 id="h-status">Tình trạng hiện tại</h2>
+    <div class="status">
+      <div class="st done"><span class="dot"></span><b>Gửi công văn đề nghị hướng dẫn</b><small>Thuế TP Hà Nội và công ty cùng gửi Cục Thuế</small></div>
+      <div class="st now"><span class="dot"></span><span class="tag">Đang ở đây</span><b>Cục Thuế xử lý nội bộ</b><small>Đang chuẩn bị văn bản hướng dẫn</small></div>
+      <div class="st"><span class="dot"></span><b>Cục Thuế ban hành công văn</b><small>Điểm bắt đầu của mô hình kịch bản</small></div>
+      <div class="st"><span class="dot"></span><b>Thuế TP Hà Nội ra quyết định</b><small>Đồng ý hoặc không đồng ý hoàn</small></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-model">
+    <h2 id="h-model">Mô hình kịch bản</h2>
+    <p class="lede">Chọn một kịch bản để xem đường đi tương ứng. Bấm vào từng ô để xem chi tiết và việc cần làm.</p>
+    <div class="chips" role="group" aria-label="Chọn kịch bản">
+      <button class="chip" id="sc-all" data-sc="all" aria-pressed="true">Toàn bộ mô hình</button>
+      <button class="chip" id="sc-1" data-sc="kb1" data-tone="ok" aria-pressed="false"><i></i>Kịch bản 1 · Đồng ý hoàn</button>
+      <button class="chip" id="sc-21" data-sc="kb21" data-tone="warn" aria-pressed="false"><i></i>Kịch bản 2.1 · Chấp nhận khấu trừ</button>
+      <button class="chip" id="sc-22" data-sc="kb22" data-tone="warn" aria-pressed="false"><i></i>Kịch bản 2.2 · Vẫn đề nghị hoàn</button>
+      <button class="chip" id="sc-3" data-sc="kb3" data-tone="risk" aria-pressed="false"><i></i>Kịch bản 3 · Không đồng ý</button>
+    </div>
+    <div class="model">
+      <div class="canvas"><svg id="flow" viewBox="0 0 1000 1340" role="img" aria-label="Sơ đồ kịch bản hoàn thuế"></svg></div>
+      <aside class="panel" id="panel" aria-live="polite"></aside>
+    </div>
+    <div class="legend">
+      <span><i style="border-color:var(--accent);background:var(--accent-soft)"></i>Bước hành động của công ty</span>
+      <span><i style="border-color:var(--ok);background:var(--ok-soft)"></i>Được hoàn / kết thúc thuận lợi</span>
+      <span><i style="border-color:var(--warn);background:var(--warn-soft)"></i>Kết quả trung gian</span>
+      <span><i style="border-color:var(--risk);background:var(--risk-soft)"></i>Bất lợi, cần xử lý tiếp</span>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-letter">
+    <h2 id="h-letter">Bước 2 · Nội dung chính của công văn gửi Thuế TP Hà Nội</h2>
+    <div class="letter">
+      <div class="meta">
+        <div><b>Gửi</b>Thuế TP Hà Nội</div>
+        <div><b>Đồng gửi</b>Cục Thuế (cơ quan đã ban hành hướng dẫn)</div>
+        <div><b>Cân nhắc đồng gửi</b>Bộ Tài chính, Đại sứ quán, JCCI</div>
+        <div><b>Thời điểm</b>Ngay sau Bước 1, khi quan điểm của Thuế TP Hà Nội không thuận lợi</div>
+      </div>
+      <ol>
+        <li><div><b>Đề nghị xử lý hoàn thuế</b><span>Công ty hiểu công văn hướng dẫn của Cục Thuế theo hướng hồ sơ đủ điều kiện hoàn, và đề nghị Thuế TP Hà Nội xử lý hoàn cho công ty.</span></div></li>
+        <li><div><b>Đề xuất họp các bên nếu nội dung hướng dẫn còn chưa rõ</b><span>Trường hợp Thuế TP Hà Nội thấy hướng dẫn chưa đủ rõ để xử lý, đề nghị báo cáo Cục Thuế tổ chức cuộc họp giữa các bên, có thể mời Bộ Tài chính, Đại sứ quán, JCCI, để thống nhất quan điểm.</span></div></li>
+        <li><div><b>Kiến nghị lên Bộ Tài chính nếu vẫn không đồng ý</b><span>Trường hợp Thuế TP Hà Nội vẫn không đồng ý hoàn, công ty xin phép kiến nghị lên Bộ Tài chính và đồng gửi các bên liên quan.</span></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-table">
+    <h2 id="h-table">Tổng hợp kịch bản và hành động</h2>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Kịch bản</th><th>Quan điểm Thuế TP Hà Nội</th><th>Hành động của công ty</th><th>Kết quả</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Đồng ý hoàn theo hướng dẫn của Cục Thuế</td><td>Phối hợp hoàn tất thủ tục hoàn thuế</td><td><span class="badge ok">Được hoàn</span></td></tr>
+          <tr><td>2.1</td><td>Không hoàn, cho chuyển khấu trừ kỳ sau</td><td>Công ty chấp nhận khấu trừ và dừng tại đây</td><td><span class="badge warn">Khấu trừ, kết thúc</span></td></tr>
+          <tr><td>2.2</td><td>Không hoàn, cho chuyển khấu trừ kỳ sau</td><td>Công ty vẫn đề nghị hoàn (thời gian khấu trừ hết không xác định) → xử lý như Kịch bản 3</td><td><span class="badge risk">Sang Bước 2</span></td></tr>
+          <tr><td>3</td><td>Không đồng ý hoàn</td><td>Bước 2: công văn chính thức. Nếu vẫn bất lợi: Bước 3, kiến nghị Bộ Tài chính</td><td><span class="badge risk">Theo quan điểm cuối cùng</span></td></tr>
+          <tr><td>3 · biên bản</td><td>Đơn phương lập biên bản kiểm tra</td><td>Ghi ý kiến không đồng ý vào biên bản, đề nghị khoanh lại chờ ý kiến Bộ Tài chính</td><td><span class="badge risk">Sang Bước 3</span></td></tr>
+          <tr><td>Cuối cùng</td><td>Cơ quan thuế thống nhất không hoàn</td><td>Công ty cân nhắc khiếu nại hoặc khởi kiện</td><td><span class="badge risk">Công ty quyết định</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-rules">
+    <h2 id="h-rules">Nguyên tắc xử lý</h2>
+    <div class="rules">
+      <div class="rule"><b>Nắm quan điểm sớm</b><p>Trao đổi với Thuế TP Hà Nội ở cấp lãnh đạo ngay khi có công văn của Cục Thuế. Nếu chờ đến khi có biên bản hoặc quyết định thì sẽ không kịp xử lý.</p></div>
+      <div class="rule"><b>Leo thang theo trình tự</b><p>Chỉ kiến nghị Bộ Tài chính khi Thuế TP Hà Nội đã có văn bản hoặc hành động cụ thể. Gửi sớm hơn, Bộ có thể chuyển trả vì Cục Thuế đã hướng dẫn mà Thuế TP Hà Nội chưa xử lý.</p></div>
+      <div class="rule"><b>Luôn để lại căn cứ bằng văn bản</b><p>Công văn ở Bước 2 là căn cứ để công ty ghi ý kiến vào biên bản và kiến nghị lên cấp trên nếu Thuế TP Hà Nội đơn phương xử lý.</p></div>
+      <div class="rule"><b>Kiểm soát những gì có thể kiểm soát</b><p>Về nguyên tắc, Thuế TP Hà Nội có quyền đơn phương lập biên bản và ra quyết định. Công ty không thể ngăn việc đó, nhưng có thể chủ động quản lý tình hình ở từng bước.</p></div>
+    </div>
+  </section>
+
+  <footer>Tài liệu tổng hợp từ trao đổi nội bộ của nhóm tư vấn, dùng để trao đổi với khách hàng. Các kịch bản mang tính dự phòng và có thể điều chỉnh khi có công văn chính thức của Cục Thuế.</footer>
+</div>
+
+<script>
+(function(){
+const N = {
+  start:{x:330,y:6,w:340,h:66,t:'start',eb:'Điểm bắt đầu',ti:'Cục Thuế ban hành công văn hướng dẫn',
+    d:'Thuế TP Hà Nội và công ty đã cùng gửi công văn đề nghị hướng dẫn. Cục Thuế đang xử lý nội bộ và chuẩn bị ban hành văn bản.',
+    a:['Nhận bản công văn ngay khi ban hành','Phân tích nội dung hướng dẫn cùng công ty','Chuẩn bị lập luận cho buổi trao đổi ở Bước 1']},
+  s1:{x:350,y:106,w:300,h:72,t:'step',eb:'Bước 1',ti:'Trao đổi với Thuế TP Hà Nội',sb:'Cấp lãnh đạo, chưa cần văn bản',
+    d:'Mục tiêu là biết sớm quan điểm của Thuế TP Hà Nội, không chờ đến khi họ lập biên bản hoặc ra quyết định. Trao đổi ở cấp lãnh đạo nên quan điểm nhận được tương đối chắc chắn.',
+    a:['Đặt lịch làm việc với lãnh đạo Thuế TP Hà Nội','Trình bày cách hiểu của công ty về công văn Cục Thuế','Ghi nhận quan điểm để xác định kịch bản 1, 2 hay 3']},
+  k1:{x:20,y:236,w:210,h:76,t:'ok',eb:'Kịch bản 1',ti:'Đồng ý hoàn thuế',
+    d:'Thuế TP Hà Nội thấy công văn của Cục Thuế đã rõ và đồng ý hoàn.',a:['Phối hợp hoàn thiện thủ tục hoàn thuế','Không cần hành động thêm']},
+  k2:{x:380,y:236,w:240,h:76,t:'warn',eb:'Kịch bản 2',ti:'Không hoàn, cho chuyển khấu trừ',
+    d:'Số thuế không được hoàn bằng tiền mà chuyển sang khấu trừ ở các kỳ sau. Thời gian để khấu trừ hết có thể kéo dài và không xác định trước.',
+    a:['Công ty quyết định có chấp nhận khấu trừ hay không']},
+  k3:{x:770,y:236,w:210,h:76,t:'risk',eb:'Kịch bản 3',ti:'Không đồng ý hoàn',sb:'Chuyển sang Bước 2',
+    d:'Thuế TP Hà Nội không đồng ý hoàn thuế.',a:['Chuyển sang Bước 2: gửi công văn chính thức']},
+  e1:{x:20,y:372,w:210,h:96,t:'ok',eb:'Kết thúc',ti:'Thực hiện hoàn thuế',
+    d:'Hồ sơ được giải quyết theo hướng hoàn thuế.',a:['Theo dõi quyết định hoàn và tiền hoàn về tài khoản']},
+  k21:{x:270,y:372,w:210,h:96,t:'warn',eb:'Kịch bản 2.1',ti:'Công ty chấp nhận khấu trừ',sb:'Dừng tại đây',
+    d:'Công ty chấp nhận phương án chuyển khấu trừ và kết thúc vụ việc.',a:['Hạch toán, kê khai số thuế chuyển khấu trừ kỳ sau']},
+  k22:{x:520,y:372,w:210,h:96,t:'risk',eb:'Kịch bản 2.2',ti:'Công ty vẫn đề nghị hoàn',sb:'Xử lý như Kịch bản 3',
+    d:'Công ty không chấp nhận khấu trừ vì không biết khi nào khấu trừ hết, và vẫn đề nghị hoàn. Trường hợp này quy về Kịch bản 3.',a:['Chuyển sang Bước 2: gửi công văn chính thức']},
+  b2:{x:770,y:362,w:210,h:108,t:'step',eb:'Bước 2',ti:'Công văn chính thức gửi Thuế TP Hà Nội',sb:'Đồng gửi Cục Thuế',
+    d:'Tạo căn cứ bằng văn bản. Nếu sau này Thuế TP Hà Nội đơn phương lập biên bản, công ty đã có công văn để viện dẫn. Nội dung gồm 3 ý chính, xem mục bên dưới sơ đồ.',
+    a:['Đề nghị xử lý hoàn theo hướng dẫn của Cục Thuế','Đề xuất họp các bên nếu hướng dẫn chưa rõ','Nêu việc sẽ kiến nghị Bộ Tài chính nếu vẫn không đồng ý','Cân nhắc đồng gửi Bộ Tài chính, Đại sứ quán, JCCI']},
+  ra:{x:20,y:540,w:210,h:100,t:'ok',eb:'Phản hồi A',ti:'Thuế TP Hà Nội chấp nhận hoàn',
+    d:'Sau công văn hoặc sau cuộc họp, Thuế TP Hà Nội đồng ý hoàn.',a:['Phối hợp hoàn tất thủ tục hoàn thuế']},
+  rb:{x:270,y:540,w:210,h:100,t:'warn',eb:'Phản hồi B',ti:'Họp các bên',sb:'Thuế HN báo cáo Cục Thuế tổ chức',
+    d:'Cục Thuế chủ trì cuộc họp với Thuế TP Hà Nội và công ty, có thể có Bộ Tài chính, Đại sứ quán, JCCI. Kết quả thống nhất hoàn thì chuyển sang Phản hồi A. Nếu vẫn bất lợi thì sang Bước 3.',
+    a:['Chuẩn bị hồ sơ, lập luận cho cuộc họp','Đề nghị ghi nhận kết luận họp bằng văn bản']},
+  rc:{x:520,y:540,w:210,h:100,t:'risk',eb:'Phản hồi C',ti:'Đơn phương lập biên bản kiểm tra',
+    d:'Về nguyên tắc, Thuế TP Hà Nội có quyền đơn phương lập biên bản mà không trả lời công văn. Công ty không thể ngăn việc này.',a:['Không ký đồng ý nội dung bất lợi']},
+  rd:{x:770,y:540,w:210,h:100,t:'risk',eb:'Phản hồi D',ti:'Giữ quan điểm không hoàn',sb:'Có văn bản trả lời hoặc im lặng',
+    d:'Thuế TP Hà Nội trả lời công văn theo hướng không hoàn, hoặc không xử lý tiếp.',a:['Dùng văn bản trả lời (nếu có) làm căn cứ cho Bước 3']},
+  rc2:{x:520,y:676,w:210,h:100,t:'risk',eb:'Ý kiến vào biên bản',ti:'Ghi rõ không đồng ý',sb:'Đề nghị khoanh lại, chờ ý kiến Bộ Tài chính',
+    d:'Trong phần ý kiến của doanh nghiệp, nêu rõ công ty đã gửi công văn cho Thuế TP Hà Nội và Cục Thuế, không đồng ý với nội dung biên bản, và đề nghị tạm khoanh lại để chờ hướng dẫn của Bộ Tài chính.',
+    a:['Ghi ý kiến không đồng ý vào biên bản','Viện dẫn công văn đã gửi ở Bước 2','Gửi kiến nghị lên Bộ Tài chính ngay sau đó']},
+  note:{x:20,y:676,w:210,h:120,t:'note',eb:'Lưu ý chung',ti:'Nếu Thuế HN ban hành quyết định xử lý',sb:'Công ty có quyền khiếu nại theo quy định',
+    d:'Ở bất kỳ thời điểm nào, nếu Thuế TP Hà Nội ban hành quyết định xử lý bất lợi, công ty có quyền khiếu nại theo trình tự khiếu nại hành chính.',a:['Theo dõi thời hiệu khiếu nại kể từ ngày nhận quyết định']},
+  b3:{x:270,y:812,w:710,h:82,t:'step',eb:'Bước 3',ti:'Kiến nghị Bộ Tài chính',sb:'Gửi lãnh đạo Bộ, đồng gửi Cục Thuế, Thuế TP Hà Nội, Đại sứ quán, JCCI',
+    d:'Gửi thẳng Bộ Tài chính để văn bản đến tay lãnh đạo Bộ, thay vì gửi lại Cục Thuế. Nêu rõ Cục Thuế đã hướng dẫn nhưng Thuế TP Hà Nội không áp dụng. Chỉ thực hiện khi Thuế TP Hà Nội đã có văn bản hoặc hành động cụ thể.',
+    a:['Soạn công văn kiến nghị kèm toàn bộ văn bản đã trao đổi','Đồng gửi Đại sứ quán, JCCI để tăng sức nặng']},
+  m1:{x:300,y:952,w:260,h:86,t:'warn',eb:'Bộ Tài chính',ti:'Chỉ đạo họp liên ngành',pill:'Khả năng cao',
+    d:'Khả năng cao nhất là Bộ yêu cầu Cục Thuế chủ trì họp để giải quyết thống nhất, nhất là khi vấn đề hoàn thuế đang được yêu cầu xử lý nhanh.',a:['Chuẩn bị tham gia họp cùng các bên']},
+  m2:{x:690,y:952,w:260,h:86,t:'warn',eb:'Bộ Tài chính',ti:'Trả lời trực tiếp bằng công văn',
+    d:'Bộ ban hành công văn trả lời. Cũng có khả năng Bộ chuyển về Cục Thuế hoặc Thuế TP Hà Nội xử lý; khi đó công ty quay lại trao đổi với Thuế TP Hà Nội.',a:['Theo dõi văn bản trả lời của Bộ']},
+  fin:{x:395,y:1092,w:460,h:84,t:'step',eb:'Kết quả',ti:'Quan điểm cuối cùng của cơ quan thuế',sb:'Thống nhất giữa Bộ Tài chính, Cục Thuế, Thuế TP Hà Nội',
+    d:'Dù qua họp hay qua công văn trả lời, kết quả là một quan điểm thống nhất: đồng ý hoặc không đồng ý hoàn.',a:['Đánh giá kết quả cùng công ty']},
+  fY:{x:270,y:1234,w:260,h:88,t:'ok',eb:'Đồng ý',ti:'Được hoàn thuế',
+    d:'Thuế TP Hà Nội xử lý hoàn theo quan điểm thống nhất.',a:['Phối hợp hoàn tất thủ tục hoàn thuế']},
+  fN:{x:590,y:1234,w:390,h:88,t:'risk',eb:'Không đồng ý',ti:'Công ty cân nhắc khiếu nại hoặc khởi kiện',
+    d:'Khiếu nại vẫn có thể thực hiện, nhưng khả năng thành công thấp vì Bộ Tài chính và Cục Thuế đã thống nhất quan điểm. Phương án còn lại là khởi kiện vụ án hành chính tại Tòa án. Quyết định thuộc về công ty.',
+    a:['Đánh giá chi phí, thời gian và khả năng thành công','Công ty quyết định có tiếp tục hay dừng']}
+};
+const cx=id=>N[id].x+N[id].w/2, cy=id=>N[id].y+N[id].h/2, top=id=>N[id].y, bot=id=>N[id].y+N[id].h;
+const E=[];
+function v(a,b,x,label,lx,ly){x=x??cx(a);E.push({a,b,p:[[x,bot(a)],[x,top(b)]],label,lx,ly});}
+function bus(a,b,y,label,lx,ly){E.push({a,b,p:[[cx(a),bot(a)],[cx(a),y],[cx(b),y],[cx(b),top(b)]],label,lx,ly});}
+function h(a,b){const r=N[a].x<N[b].x;E.push({a,b,p:[[r?N[a].x+N[a].w:N[a].x,cy(a)],[r?N[b].x:N[b].x+N[b].w,cy(a)]]});}
+v('start','s1');
+bus('s1','k1',206);v('s1','k2');bus('s1','k3',206);
+v('k1','e1');bus('k2','k21',342);bus('k2','k22',342);v('k3','b2');h('k22','b2');
+bus('b2','ra',505);bus('b2','rb',505);bus('b2','rc',505);v('b2','rd');
+h('rb','ra');
+v('rc','rc2');v('rb','b3',null,'Vẫn bất lợi',383,720);v('rc2','b3');v('rd','b3');
+v('b3','m1',430);v('b3','m2',820);
+bus('m1','fin',1064);bus('m2','fin',1064);
+bus('fin','fY',1204,'Đồng ý',512,1197);bus('fin','fN',1204,'Không đồng ý',738,1197);
+
+const down=['b2','ra','rb','rc','rd','rc2','note','b3','m1','m2','fin','fY','fN'];
+const SC={
+  all:null,
+  kb1:['start','s1','k1','e1'],
+  kb21:['start','s1','k2','k21'],
+  kb22:['start','s1','k2','k22',...down],
+  kb3:['start','s1','k3',...down]
+};
+const svg=document.getElementById('flow'),NS='http://www.w3.org/2000/svg';
+const gE=document.createElementNS(NS,'g'),gN=document.createElementNS(NS,'g');svg.append(gE,gN);
+E.forEach(e=>{
+  const g=document.createElementNS(NS,'g');
+  const pl=document.createElementNS(NS,'polyline');pl.setAttribute('class','edge');
+  const p=e.p.slice();const [x2,y2]=p[p.length-1],[x1,y1]=p[p.length-2];
+  const L=Math.hypot(x2-x1,y2-y1),ux=(x2-x1)/L,uy=(y2-y1)/L;
+  p[p.length-1]=[x2-ux*6,y2-uy*6];
+  pl.setAttribute('points',p.map(q=>q.join(',')).join(' '));
+  const ah=document.createElementNS(NS,'polygon');ah.setAttribute('class','arrow');
+  const bx=x2-ux*9,by=y2-uy*9;
+  ah.setAttribute('points',`${x2},${y2} ${bx-uy*5},${by+ux*5} ${bx+uy*5},${by-ux*5}`);
+  g.append(pl,ah);
+  if(e.label){const t=document.createElementNS(NS,'text');t.setAttribute('class','elabel');t.setAttribute('x',e.lx);t.setAttribute('y',e.ly);t.setAttribute('text-anchor',e.lx<400&&e.a==='rb'?'start':'middle');t.textContent=e.label;g.append(t);}
+  e.el=g;gE.append(g);
+});
+Object.entries(N).forEach(([id,n])=>{
+  const g=document.createElementNS(NS,'g');g.setAttribute('class','node');g.setAttribute('tabindex','0');g.setAttribute('role','button');g.setAttribute('aria-label',(n.eb?n.eb+': ':'')+n.ti);
+  const fo=document.createElementNS(NS,'foreignObject');fo.setAttribute('x',n.x);fo.setAttribute('y',n.y);fo.setAttribute('width',n.w);fo.setAttribute('height',n.h);
+  const d=document.createElement('div');d.className='nd '+n.t;
+  d.innerHTML=(n.eb?`<span class="eb">${n.eb}</span>`:'')+`<b>${n.ti}</b>`+(n.sb?`<span class="sb">${n.sb}</span>`:'')+(n.pill?`<span class="pill">${n.pill}</span>`:'');
+  fo.append(d);g.append(fo);n.el=g;gN.append(g);
+  g.addEventListener('click',()=>select(id));
+  g.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();select(id);}});
+});
+const panel=document.getElementById('panel');
+function select(id){
+  const n=N[id];
+  Object.values(N).forEach(m=>m.el.classList.remove('sel'));n.el.classList.add('sel');
+  panel.innerHTML=`<span class="eyebrow">${n.eb||''}</span><h3>${n.ti}</h3><p>${n.d}</p>`+
+    (n.a&&n.a.length?`<span class="k">Việc cần làm</span><ul>${n.a.map(x=>`<li>${x}</li>`).join('')}</ul>`:'')+
+    `<p class="hint">Bấm vào ô khác trên sơ đồ để xem chi tiết.</p>`;
+}
+function scen(key){
+  const set=SC[key]?new Set(SC[key]):null;
+  document.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.sc===key?'true':'false'));
+  Object.entries(N).forEach(([id,n])=>n.el.classList.toggle('dim',!!set&&!set.has(id)));
+  E.forEach(e=>{const on=set&&set.has(e.a)&&set.has(e.b);e.el.classList.toggle('dim',!!set&&!on);e.el.classList.toggle('hot',!!on);});
+  if(set){const last={kb1:'e1',kb21:'k21',kb22:'k22',kb3:'k3'}[key];select(last);}
+  try{localStorage.setItem('kb-scen',key);}catch(_){}
+}
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>scen(c.dataset.sc)));
+let saved='all';try{saved=localStorage.getItem('kb-scen')||'all';}catch(_){}
+select('s1');scen(SC.hasOwnProperty(saved)?saved:'all');if(saved==='all')select('s1');
+})();
+</script>
